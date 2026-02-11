@@ -2,6 +2,7 @@
 
 from pydantic import BaseModel, EmailStr, Field
 
+
 class WorkerCreate(BaseModel):
     name: str = Field(min_length=2, max_length=50)
     email: EmailStr
@@ -20,3 +21,17 @@ class WorkerOut(BaseModel):
 class WorkerResponse(BaseModel):
     message: str
     worker: WorkerOut
+
+
+# schemas.py
+
+
+
+class WorkerScoreInput(BaseModel):
+    rating: float = Field(..., ge=1, le=5)
+    on_time: float = Field(..., ge=0, le=100)
+    completion: float = Field(..., ge=0, le=100)
+    experience: float = Field(..., ge=0)
+    salary: float = Field(..., ge=0)
+    complaints: int = Field(..., ge=0)
+    jobs_completed: int = Field(..., ge=0)

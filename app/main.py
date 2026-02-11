@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from app.schemas import WorkerCreate, WorkerResponse
+from app.schemas import   WorkerCreate, WorkerResponse
 from app.db import Base, engine, SessionLocal, WorkerDB
 from app.analytics import calculate_employability
 from app.ml_model import predict_score
+from app.score_engine import calculate_final_score
+from app.schemas import WorkerScoreInput
 
 app = FastAPI()
 
@@ -166,3 +168,20 @@ def score_distribution():
 
     finally:
         db.close()
+
+# Temporary global assumptions
+GLOBAL_MEAN_RATING = 4.2
+MAX_SALARY = 50000
+
+
+@app.post("/score")
+def score_worker(worker: WorkerScoreInput):
+    final_score = calculate_final_score(
+        worker,
+        global_mean=GLOBAL_MEAN_RATING,
+        max_salary=MAX_SALARY
+    )
+
+    return {
+        "final_score": final_score
+    }
