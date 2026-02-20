@@ -7,8 +7,6 @@ Base = declarative_base()
 # -------------------------
 # WORKER MODEL
 # -------------------------
-# This model represents a worker in the database. It includes fields for
-# name, email, skill, experience years, and salary. The email field is unique   
 class WorkerDB(Base):
     __tablename__ = "workers"
 
